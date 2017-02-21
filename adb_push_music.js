@@ -25,10 +25,16 @@ setTimeout(
     glob("/home/kenpeter/Downloads/music/**/*.mp3", function (er, files) {
 
       files.map(function(singleFile){
-        var tmpFileName = randomstring.generate(7);
+        var arr = singleFile.split("/");
+        var lastElement = arr[arr.length - 1];
+        // https://stackoverflow.com/questions/441018/replacing-spaces-with-underscores-in-javascript
+        // https://stackoverflow.com/questions/9705194/replace-special-characters-in-a-string-with-underscore
+        var tmpFileName = lastElement.replace(/[&\/\\#,+()$~%'":*?<>{}\ ]/g, "_");
+        
+        //var tmpFileName = randomstring.generate(7);
       
         //https://stackoverflow.com/questions/22504566/renaming-files-using-node-js
-        var tmpFullFile = "/home/kenpeter/Downloads/music/" + tmpFileName + ".mp3";
+        var tmpFullFile = "/home/kenpeter/Downloads/music/" + tmpFileName;
         fs.rename(singleFile, tmpFullFile, function(err) {
           if ( err ) console.log('ERROR: ' + err);
           
