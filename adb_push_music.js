@@ -1,6 +1,8 @@
 // https://stackoverflow.com/questions/16364748/must-do-adb-kill-server-and-start-server-everytime-to-recognize-android-device-i
 
 var glob = require("glob");
+var fs = require('fs');
+var randomstring = require("randomstring");
 
 var exec = require('child_process').exec;
 
@@ -22,15 +24,19 @@ setTimeout(
   function() {
     glob("/home/kenpeter/Downloads/music/**/*.mp3", function (er, files) {
 
-      // push
       files.map(function(singleFile){
-  
-        // e.g.
-        // singleFile === /home/kenpeter/Downloads/music/蒙 面唱将猜猜猜.mp3
-       
-        //var cmd = "adb push" + " " + "'" + singleFile + "'" + " " + "/sdcard/Music";
-        //console.log(cmd);
-        //exec(cmd, puts);
+        var tmpFileName = randomstring.generate(7);
+      
+        //https://stackoverflow.com/questions/22504566/renaming-files-using-node-js
+        var tmpFullFile = "/home/kenpeter/Downloads/music/" + tmpFileName + ".mp3";
+        fs.rename(singleFile, tmpFullFile, function(err) {
+          if ( err ) console.log('ERROR: ' + err);
+          
+          var cmd = "adb push" + " " + tmpFullFile + " " + "/sdcard/Music";
+          console.log(cmd);
+          exec(cmd, puts);
+        });
+        
       }); // end files.map
       
     }); // end glob
