@@ -19,10 +19,12 @@ exec("adb start-server", puts);
 //
 console.log("\nwait for 8s\n");
 
+var audio_path = "/var/www/html/test/testme/test_youtube_dl/audio";
+
 // https://stackoverflow.com/questions/32604656/what-is-the-glob-character
 setTimeout(
   function() {
-    glob("/home/kenpeter/Downloads/music/**/*.mp3", function (er, files) {
+    glob(audio_path + "/**/*.mp3", function (er, files) {
 
       files.map(function(singleFile){
         var arr = singleFile.split("/");
@@ -34,7 +36,7 @@ setTimeout(
         //var tmpFileName = randomstring.generate(7);
       
         //https://stackoverflow.com/questions/22504566/renaming-files-using-node-js
-        var tmpFullFile = "/home/kenpeter/Downloads/music/" + tmpFileName;
+        var tmpFullFile = audio_path + "/"+ tmpFileName;
         fs.rename(singleFile, tmpFullFile, function(err) {
           if ( err ) console.log('ERROR: ' + err);
           
